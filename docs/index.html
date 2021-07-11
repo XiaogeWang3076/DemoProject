@@ -4,7 +4,7 @@
 
 <body>
   <div class="jar">
-    <img src="jar.png">
+    <img src="https://i.pinimg.com/originals/a6/5f/da/a65fdaaa9d4573e3772e359f0ca96295.jpg">
   </div>
 
 
@@ -20,32 +20,44 @@
    <input type="file" accept="image/*" id="file-input">
   </div>
 
-  <img id="output">
+  
+  <div id="overlayImg" onclick="off()">
+    <img id="output">
+  </div>
+
   
 </body>
 
 
 <script>
+
+
+  function off(){
+    document.getElementById("overlayImg").style.display="none";
+  }
+
   const fileInput = document.getElementById('file-input');
 
-  fileInput.addEventListener('change', (e) => doSomethingWithFiles(e.target.files));
+  fileInput.addEventListener('change', (e) => displayFiles(e.target.files));
 
   const output = document.getElementById('output');
 
-  // function doSomethingWithFiles(fileList) {
-  //   let file = null;
+  function displayFiles(fileList) {
+    let file = null;
 
-  //   for (let i = 0; i < fileList.length; i++) {
-  //     if (fileList[i].type.match(/^image\//)) {
-  //       file = fileList[i];
-  //       break;
-  //     }
-  //   }
+    for (let i = 0; i < fileList.length; i++) {
+      if (fileList[i].type.match(/^image\//)) {
+        file = fileList[i];
+        break;
+      }
+    }
 
-  //   if (file !== null) {
-  //     output.src = URL.createObjectURL(file);
-  //   }
-  // }
+    document.getElementById("overlayImg").style.display="block";
+
+    if (file !== null) {
+      output.src = URL.createObjectURL(file);
+    }
+  }
 
 </script>
 </html>
