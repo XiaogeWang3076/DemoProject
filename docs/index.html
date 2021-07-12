@@ -63,18 +63,13 @@
 <script type="text/javascript">
 
   //var mqtt = require('mqtt')
-  var client  = mqtt.connect('wss://mqtt.eclipseprojects.io/mqtt')
+  var client  = mqtt.connect('ws://mqtt.eclipseprojects.io/mqtt')
   client.subscribe("mqtt/demo")
 
   client.on("message", function (topic, payload) {
     console.log([topic, payload].join(": "))
     client.end()
   })
-
-  //client.publish("mqtt/demo", "hello world!")
-
-
-
 
 
 
