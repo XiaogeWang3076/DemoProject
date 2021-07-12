@@ -1,7 +1,9 @@
 <html lang="en">
 
+<script src="./browserMqtt.js"></script>
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
 
 <body>
   <div class="jar">
@@ -49,7 +51,7 @@
       <!-- display identification result -->
       <p id="plant"></p>
       <div class="collectionResult"><p id="collectionResult"></p></div>
-      <div class="gotItBtn"><button id="gotIt" onclick="overlayOff()">Got It</button></div>
+      <div class="gotItBtn"><button id="gotIt" onclick="overlayOff(), clear()">Got It</button></div>
     </div>
 
   </div>
@@ -59,6 +61,22 @@
 
 
 <script type="text/javascript">
+
+  //var mqtt = require('mqtt')
+  var client  = mqtt.connect('ws://mqtt.eclipseprojects.io/mqtt')
+  client.subscribe("mqtt/demo")
+
+  client.on("message", function (topic, payload) {
+    console.log([topic, payload].join(": "))
+    client.end()
+  })
+
+  //client.publish("mqtt/demo", "hello world!")
+
+
+
+
+
 
   function overlayOff(){
     //close image overlay
@@ -147,28 +165,44 @@
   
   };
 
+  var plantResult;
+  var plantName;
+
   function displayResult(data){ 
 
     const plantDetails = data.suggestions[0];
-    var plantResult = data.is_plant.toString();
+    plantResult = data.is_plant.toString();
+    plantName = plantDetails.plant_name.toString();
     console.log(plantResult);
     console.log(plantDetails);
-    console.log(plantDetails.plant_name);
+    console.log(plantName);
 
     if (plantResult == "true") {
       //display plant's name
-      document.getElementById("plant").innerHTML = plantDetails.plant_name;
+      document.getElementById("plant").innerHTML = plantName;
       document.getElementById("collectionResult").innerHTML = "has been collected!";
       document.getElementById("gotIt").style.display="block";
-      document.getElementById("loadingPrompt").innerHTML= " ";
+      document.getElementById("loadingPrompt").innerHTML= "";
+
+      var msg = JSON.stringify({"plantName":plantName})
+      client.publish("mqtt/demo", msg)
     }
 
     else if (plantResult=="false") {
       document.getElementById("collectionResult").innerHTML = "Umm, it doesn't look like a plant. &#129488; </br> You can try again and refer to the Snap Tips.";
       document.getElementById("gotIt").style.display="block";
-      document.getElementById("loadingPrompt").innerHTML= " ";
+      document.getElementById("loadingPrompt").innerHTML= "";
     }
+
   }
+
+  function clear(){
+    document.getElementById("plant").innerHTML = "";
+    document.getElementById("collectionResult").innerHTML = "";
+    document.getElementById("confirmButton").style.display="block";
+    delete plantResult;
+  }
+
 
 </script>
 </html>
