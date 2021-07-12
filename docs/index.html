@@ -1,6 +1,7 @@
 <html lang="en">
 
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 <body>
   <div class="jar">
@@ -10,30 +11,66 @@
 
   <div class="title">
       <h1>Collect Plants!</h1>
-      <p>Capture plants into the collection jar </p>
+      <p>Capture plants into the nature collection jar. </p>
+      <button class="tips">
+        <label>Snap Tips ></label>
+      </button>
   </div>
     
-  <div class="button">
+  <div class="collectButton">
     <label for="file-input" class="file-upload">
     Collect
     </label>
    <input type="file" accept="image/*" id="file-input">
   </div>
 
-  
-  <div id="overlayImg" onclick="off()">
-    <img id="output">
+
+  <div id="overlay">
+    <div class="cancle">
+      <label type="button" onclick="overlayOff()">Close</label>
+    </div>
+
+    <div class="imageFile"> 
+      <img id="output">
+    </div>
+
+    <div class="loading">
+      <p id="loadingPrompt"></p>
+    </div>
+
+    <div class="confirm"> 
+      <!-- confirm button used to call identification -->
+      <button type="button" id="confirmButton" onclick="sendIdentification(), confirmHide(), loading()">
+          Confirm
+      </button> 
+    </div>
+
+    <div id="result">
+      <!-- display identification result -->
+      <p id="plant"></p>
+      <div class="collectionResult"><p id="collectionResult"></p></div>
+      <div class="gotItBtn"><button id="gotIt" onclick="overlayOff()">Got It</button></div>
+    </div>
+
   </div>
 
   
 </body>
 
 
-<script>
+<script type="text/javascript">
 
+  function overlayOff(){
+    //close image overlay
+    document.getElementById("overlay").style.display="none";
+  }
 
-  function off(){
-    document.getElementById("overlayImg").style.display="none";
+  function confirmHide(){
+    document.getElementById("confirmButton").style.display="none";
+  }
+
+  function loading(){
+    document.getElementById("loadingPrompt").innerHTML= "&#127811; &#127807; </br> It will take a few seconds to identify the plant...";
   }
 
   const fileInput = document.getElementById('file-input');
@@ -52,10 +89,84 @@
       }
     }
 
-    document.getElementById("overlayImg").style.display="block";
+    document.getElementById("overlay").style.display="block";
 
     if (file !== null) {
       output.src = URL.createObjectURL(file);
+    }
+  }
+
+
+ // call sendIdentification
+  function sendIdentification() {
+    const files = [...document.querySelector('input[type=file]').files];
+    const promises = files.map((file) => {
+      return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            const res = event.target.result;
+            console.log(res);
+            resolve(res);
+          }
+          reader.readAsDataURL(file)
+      })
+    })
+    
+    Promise.all(promises).then((base64files) => {
+      console.log(base64files)
+            
+      const data = {
+        api_key: "rJXFO0d9akWhKGxNXCqGiBJzWO0GJ9vkGOydqBk2fHtPpkWpkU",
+        images: base64files,
+        modifiers: ["crops_fast", "similar_images"],
+        plant_language: "en",
+        plant_details: ["common_names",
+                          "url",
+                          "name_authority",
+                          "wiki_description",
+                          "taxonomy",
+                          "synonyms"]
+      };
+      
+      fetch('https://api.plant.id/v2/identify', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        displayResult(data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    })
+  
+  };
+
+  function displayResult(data){ 
+
+    const plantDetails = data.suggestions[0];
+    var plantResult = data.is_plant.toString();
+    console.log(plantResult);
+    console.log(plantDetails);
+    console.log(plantDetails.plant_name);
+
+    if (plantResult == "true") {
+      //display plant's name
+      document.getElementById("plant").innerHTML = plantDetails.plant_name;
+      document.getElementById("collectionResult").innerHTML = "has been collected!";
+      document.getElementById("gotIt").style.display="block";
+      document.getElementById("loadingPrompt").innerHTML= " ";
+    }
+
+    else if (plantResult=="false") {
+      document.getElementById("collectionResult").innerHTML = "Umm, it doesn't look like a plant. &#129488; </br> You can try again and refer to the Snap Tips.";
+      document.getElementById("gotIt").style.display="block";
+      document.getElementById("loadingPrompt").innerHTML= " ";
     }
   }
 
