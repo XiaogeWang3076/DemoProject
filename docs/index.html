@@ -6,14 +6,38 @@
 
 
 <body>
-  <div class="jar">
-    <img src="https://i.pinimg.com/originals/a6/5f/da/a65fdaaa9d4573e3772e359f0ca96295.jpg">
+  <div class="elements">
+
+    <div id="plant1">
+      <img src="https://i.imgur.com/auw5MRd.png">
+    </div>
+
+    <div id="plant2">
+      <img src="https://i.imgur.com/6yp8lmS.png">
+    </div>
+
+    <div id="plant3">
+      <img src="https://i.imgur.com/3F9TsfD.png">
+    </div>
+
+    <div id="flower1">
+      <img src="https://i.imgur.com/Jm5yYQe.png">
+    </div>
+
+    <div id="flower2">
+      <img src="https://i.imgur.com/XJhh7XE.png">
+    </div>
+
+    <div id="flower3">
+      <img src="https://i.imgur.com/Rr1OPau.png">
+    </div>
+
   </div>
 
-
-  <div class="title">
+  <div class="content">
+    <div class="title">
       <h1>Collect Plants!</h1>
-      <p>Capture plants into the nature collection jar. </p>
+      <p>Capture different plants into the nature collection jar.</p>
       <button class="tips">
         <label>Snap Tips ></label>
       </button>
@@ -25,6 +49,9 @@
     </label>
    <input type="file" accept="image/*" id="file-input">
   </div>
+
+  </div>
+  
 
 
   <div id="overlay">
@@ -51,7 +78,7 @@
       <!-- display identification result -->
       <p id="plant"></p>
       <div class="collectionResult"><p id="collectionResult"></p></div>
-      <div class="gotItBtn"><button id="gotIt" onclick="overlayOff(), clear()">Got It</button></div>
+      <div class="gotItBtn"><button id="gotIt" onclick="overlayOff()">Got It</button></div>
     </div>
 
   </div>
@@ -70,6 +97,11 @@
     console.log([topic, payload].join(": "))
     client.end()
   })
+
+  //client.publish("mqtt/demo", "hello world!")
+
+
+
 
 
 
@@ -94,15 +126,19 @@
 
   function displayFiles(fileList) {
     let file = null;
-
     for (let i = 0; i < fileList.length; i++) {
       if (fileList[i].type.match(/^image\//)) {
         file = fileList[i];
+        console.log(file)
+
         break;
       }
     }
-
     document.getElementById("overlay").style.display="block";
+    document.getElementById("plant").innerHTML = "";
+    document.getElementById("collectionResult").innerHTML = "";
+    document.getElementById("confirmButton").style.display="block";
+    document.getElementById("gotIt").style.display="none";
 
     if (file !== null) {
       output.src = URL.createObjectURL(file);
@@ -179,8 +215,17 @@
       document.getElementById("gotIt").style.display="block";
       document.getElementById("loadingPrompt").innerHTML= "";
 
+      //send MQTT msg
       var msg = JSON.stringify({"plantName":plantName})
       client.publish("mqtt/demo", msg)
+
+      //display png
+      // if (plantName=="Verbesina virginica") {
+      //   document.getElementById("plant1").style.display="block";
+      // }
+      var items = {"Verbesina virginica":"plant1", "Asparagus densiflorus":"plant2", "Ficus microcarpa":"plant3","Allamanda cathartica":"flower1","Catharanthus roseus":"flower2","Hibiscus rosa-sinensis":"flower3"};
+      document.getElementById(items[plantName]).style.display="block";
+
     }
 
     else if (plantResult=="false") {
@@ -190,14 +235,6 @@
     }
 
   }
-
-  function clear(){
-    document.getElementById("plant").innerHTML = "";
-    document.getElementById("collectionResult").innerHTML = "";
-    document.getElementById("confirmButton").style.display="block";
-    delete plantResult;
-  }
-
 
 </script>
 </html>
