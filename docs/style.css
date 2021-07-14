@@ -2,27 +2,96 @@ html, body{
   margin: 0;
   height: 100%;
   width: 100%;
+/*  padding-top: 70em;*/
+  background-image: url('https://i.imgur.com/7DqjNpU.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
 }
 
 input[type=file] {
   display: none;
 }
 
-.jar img {
-width: 40%;
-height: auto;
-margin-left: 10%;
+#plant1{
+  padding-top: 56em;
+  padding-left: 21em;
+  position: absolute;
+  display: none;
+  z-index: .5;
 }
 
-.jar{
-  display: flex;
-  justify-content: center;
-  overflow: hidden;
-  padding-top: 15%;
+#plant1 img{
+  width: 6em;
+}
+
+#plant2{
+  padding-top: 50em;
+  padding-left: 35em;
+  position: absolute;
+  display: none;
+  z-index: 2;
+}
+
+#plant2 img{
+  width: 5em;
+}
+
+
+#plant3{
+  padding-top: 61em;
+  padding-left: 26em;
+  position: absolute;
+  display: none;
+  z-index: 1;
+}
+
+#plant3 img{
+  width: 6em;
+}
+
+#flower1{
+  padding-top: 59em;
+  padding-left: 24em;
+  position: absolute;
+  display: none;
+  z-index: 1;
+}
+
+#flower1 img{
+  width: 5em;
+}
+
+#flower2{
+  padding-top: 59em;
+  padding-left: 33em;
+  position: absolute;
+  display: none;
+  z-index: 3;
+}
+
+#flower2 img{
+  width: 5em;
+}
+
+#flower3{
+  padding-top: 57em;
+  padding-left: 37em;
+  position: absolute;
+  display: none;
+  z-index: 1;
+}
+
+#flower3 img{
+  width: 5em;
+}
+
+.content{
+  padding-top: 68em;
 }
 
 .title{
-  margin-top: 10%;
+  width: 100%;
   text-align: center;
 }
 
@@ -82,7 +151,8 @@ margin-left: 10%;
   bottom: 0;
   object-fit: contain;
   background-color: rgba(0, 0, 0, 0.85);
-  z-index: 2;
+  overflow: scroll;
+  z-index: 20;
 }
 
 .imageFile{
@@ -148,7 +218,7 @@ margin-left: 10%;
 }
 
 #plant{
-  font-size: 2.5em;
+  font-size: 2.2em;
   font-family: avenir;
   font-weight: bolder;
   margin-bottom: 0;
