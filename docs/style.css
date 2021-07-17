@@ -15,10 +15,10 @@ input[type=file] {
 
 #plant1{
   padding-top: 56em;
-  padding-left: 21em;
+  padding-left: 20em;
   position: absolute;
   display: none;
-  z-index: .5;
+  z-index: 1;
 }
 
 #plant1 img{
@@ -26,28 +26,52 @@ input[type=file] {
 }
 
 #plant2{
-  padding-top: 50em;
-  padding-left: 35em;
+  padding-top: 48em;
+  padding-left: 37em;
   position: absolute;
   display: none;
   z-index: 2;
 }
 
 #plant2 img{
-  width: 5em;
+  width: 4.1em;
 }
 
 
 #plant3{
   padding-top: 61em;
-  padding-left: 26em;
+  padding-left: 29em;
   position: absolute;
   display: none;
-  z-index: 1;
+  z-index: 3;
 }
 
 #plant3 img{
   width: 6em;
+}
+
+#plant4{
+  padding-top: 44em;
+  padding-left: 23.5em;
+  position: absolute;
+  display: none;
+  z-index: 0;
+}
+
+#plant4 img{
+  width: 7em;
+}
+
+#plant5{
+  padding-top: 56em;
+  padding-left: 32em;
+  position: absolute;
+  display: none;
+  z-index: 0;
+}
+
+#plant5 img{
+  width: 5.5em;
 }
 
 #flower1{
@@ -64,14 +88,14 @@ input[type=file] {
 
 #flower2{
   padding-top: 59em;
-  padding-left: 33em;
+  padding-left: 34em;
   position: absolute;
   display: none;
   z-index: 3;
 }
 
 #flower2 img{
-  width: 5em;
+  width: 3.4em;
 }
 
 #flower3{
@@ -79,10 +103,34 @@ input[type=file] {
   padding-left: 37em;
   position: absolute;
   display: none;
-  z-index: 1;
+  z-index: 4;
 }
 
 #flower3 img{
+  width: 5em;
+}
+
+#flower4{
+  padding-top: 55em;
+  padding-left: 22.5em;
+  position: absolute;
+  display: none;
+  z-index: 0;
+}
+
+#flower4 img{
+  width: 3em;
+}
+
+#flower5{
+  padding-top: 57.5em;
+  padding-left: 27.5em;
+  position: absolute;
+  display: none;
+  z-index: .5;
+}
+
+#flower5 img{
   width: 5em;
 }
 
