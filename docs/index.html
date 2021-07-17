@@ -20,16 +20,32 @@
       <img src="https://i.imgur.com/3F9TsfD.png">
     </div>
 
+    <div id="plant4">
+      <img src="https://i.imgur.com/HQ8qCKk.png">
+    </div>
+
+    <div id="plant5">
+      <img src="https://i.imgur.com/5iWqJwC.png">
+    </div>
+
     <div id="flower1">
       <img src="https://i.imgur.com/Jm5yYQe.png">
     </div>
 
     <div id="flower2">
-      <img src="https://i.imgur.com/XJhh7XE.png">
+      <img src="https://i.imgur.com/R5LgizI.png">
     </div>
 
     <div id="flower3">
-      <img src="https://i.imgur.com/Rr1OPau.png">
+      <img src="https://i.imgur.com/XJhh7XE.png">
+    </div>
+
+    <div id="flower4">
+      <img src="https://i.imgur.com/1OTqUNr.png">
+    </div>
+
+    <div id="flower5">
+      <img src="https://i.imgur.com/PxeWZUX.png">
     </div>
 
   </div>
@@ -91,18 +107,13 @@
 
   //var mqtt = require('mqtt')
   var client  = mqtt.connect('wss://mqtt.eclipseprojects.io/mqtt')
-  client.subscribe("mqtt/demo")
-
+  //client.subscribe("mqtt/demo")
+  //client.publish("mqtt/demo", "hello world!")
   client.on("message", function (topic, payload) {
     console.log([topic, payload].join(": "))
     client.end()
   })
-
-  //client.publish("mqtt/demo", "hello world!")
-
-
-
-
+  
 
 
   function overlayOff(){
@@ -208,6 +219,10 @@
     console.log(plantDetails);
     console.log(plantName);
 
+    //send MQTT msg
+    var msg = JSON.stringify({"plantName":plantName})
+      client.publish("mqtt/demo", msg, {qos: 1, retain: false, dup: false})
+
     if (plantResult == "true") {
       //display plant's name
       document.getElementById("plant").innerHTML = plantName;
@@ -215,15 +230,12 @@
       document.getElementById("gotIt").style.display="block";
       document.getElementById("loadingPrompt").innerHTML= "";
 
-      //send MQTT msg
-      var msg = JSON.stringify({"plantName":plantName})
-      client.publish("mqtt/demo", msg)
-
       //display png
       // if (plantName=="Verbesina virginica") {
       //   document.getElementById("plant1").style.display="block";
       // }
-      var items = {"Verbesina virginica":"plant1", "Asparagus densiflorus":"plant2", "Ficus microcarpa":"plant3","Allamanda cathartica":"flower1","Catharanthus roseus":"flower2","Hibiscus rosa-sinensis":"flower3"};
+
+      var items = {"Verbesina virginica":"plant1", "Asparagus densiflorus":"plant2", "Ficus microcarpa":"plant3","Dypsis lutescens":"plant4", "Justicia brandegeeana":"plant5","Allamanda cathartica":"flower1","Catharanthus roseus":"flower2","Hibiscus moscheutos":"flower3","Thunbergia erecta":"flower4","Hibiscus rosa-sinensis":"flower5","Jatropha integerrima":"flower6"}
       document.getElementById(items[plantName]).style.display="block";
 
     }
@@ -235,6 +247,7 @@
     }
 
   }
+
 
 </script>
 </html>
