@@ -203,17 +203,13 @@ input[type=file] {
   z-index: 20;
 }
 
-.imageFile{
-  width: 100%;
-  height: auto;
-  display: flex;
-  justify-content: center;
-}
-
 #overlay img{
   width: 80%;
   height: auto;
   padding-top: 30px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .cancle{
